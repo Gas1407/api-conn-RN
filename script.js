@@ -1,6 +1,6 @@
 const axios = require('axios');
 
-axios.get("http://dog-api.kinduff.com/api/facts")
+axios.get("https://pokeapi.co/api/v2/pokemon/")
     .then(function (resp){
         console.log(resp.data.facts[0]);
     })

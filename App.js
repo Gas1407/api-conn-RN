@@ -1,37 +1,40 @@
 import * as React from 'react';
 import { StatusBar } from 'expo-status-bar';
-import { ActivityIndicator, StyleSheet, Text, View, Button } from 'react-native';
+import { ActivityIndicator, StyleSheet, Text, View} from 'react-native';
+import { Button } from 'react-native-paper';
 const axios = require('axios').default;
 
 export default function App() {
 
-  const [frases, setFrases] = React.useState([])
-  const [loading, setLoading] = React.useState(false)
+  const [pokemon, setPokemon] = React.useState("")
+ 
 
-  function pegarAPI(){
-    setLoading(true);
-    axios.get("http://dog-api.kinduff.com/api/facts?number=5")
-      .then(function (resp){
-          setFrases(resp.data.facts);
-          setLoading(false);
+  function UsarApi(){
+    axios.get("https://pokeapi.co/api/v2/pokemon/")
+      .then(function(response){
+      
+          const pika = parseInt(Math.random()*20+1);
+          setPokemon(response.data.results[pika].name);
+    
       })
-      .catch(function (err){
-          console.log(err);
+      .catch(function(error){
+          console.log(error);
       })
   }
 
   return (
-    <View style={styles.container}>
-      {!loading ? <Button 
-        title="Obtener frase"
-        onPress={() => pegarAPI()}
-        style={styles.boton}
-      /> : <ActivityIndicator/>}
-      {frases.length == 0 ? null :
-        <>
-        {frases.map((frase, index) => <Text key={index}>{frase}</Text>)}
-        </>
-      }
+    <View style={styles.container}> 
+      
+      
+      {<Button
+      mode= 'contained' 
+      onPress={()=> UsarApi()}
+      >Obtener pokemon
+      </Button>}
+      <Text>{"El pokemon es: " + pokemon}</Text>
+      
+     
+      
       <StatusBar style="auto" />
     </View>
   );
@@ -47,5 +50,6 @@ const styles = StyleSheet.create({
   boton: {
     color: 'red',
     margin: 20
+    
   }
 });
